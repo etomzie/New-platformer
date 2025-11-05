@@ -83,11 +83,46 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    [Header("Wall Check")]
+    public float wallCheckDistance = 0.2f;
+    public float characterHeight = 1f;  // Adjust this to match your character's height
+
+    private bool IsWallAhead()
+    {
+        Vector2 direction = facingRight ? Vector2.right : Vector2.left;
+        
+        // Bottom raycast
+        Vector2 bottomStart = (Vector2)transform.position + Vector2.down * (characterHeight / 2);
+        RaycastHit2D bottomHit = Physics2D.Raycast(bottomStart, direction, wallCheckDistance, groundLayer);
+        
+        // Top raycast
+        Vector2 topStart = (Vector2)transform.position + Vector2.up * (characterHeight / 2);
+        RaycastHit2D topHit = Physics2D.Raycast(topStart, direction, wallCheckDistance, groundLayer);
+        
+        // Center raycast
+        RaycastHit2D centerHit = Physics2D.Raycast(transform.position, direction, wallCheckDistance, groundLayer);
+
+        // Draw debug rays in Scene view
+        Debug.DrawRay(bottomStart, direction * wallCheckDistance, Color.red);
+        Debug.DrawRay(topStart, direction * wallCheckDistance, Color.red);
+        Debug.DrawRay(transform.position, direction * wallCheckDistance, Color.red);
+
+        return bottomHit.collider != null || topHit.collider != null || centerHit.collider != null;
+    }
+
     void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
-
-
+        // Check for wall collision before applying horizontal movement
+        if (!IsWallAhead() || (IsWallAhead() && 
+            ((facingRight && horizontalInput < 0) || (!facingRight && horizontalInput > 0))))
+        {
+            rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
+        }
+        else
+        {
+            // Stop horizontal movement when hitting a wall
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        }
 
         if (horizontalInput > 0 && !facingRight)
         {
