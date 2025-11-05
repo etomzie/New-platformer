@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "A platform game.sln"
+    "dotnet.defaultSolution": "New-platformer.sln"
 }
