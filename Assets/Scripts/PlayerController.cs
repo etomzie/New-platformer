@@ -1,0 +1,149 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class PlayerController : MonoBehaviour
+{
+    [Header("移動設定")]
+    public float moveSpeed = 5f;
+    public float jumpForce = 8f;
+
+    [Header("跳躍設定")]
+    public float coyoteTime = 0.1f;
+    public int maxJumpCount = 2;
+    public int jumpCount = 2;
+    private float coyoteTimeCounter;
+    private bool wasGrounded;
+
+    [Header("地板偵測")]
+    public Transform groundCheckPoint;
+    public float groundCheckRadius = 0.2f;
+    public LayerMask groundLayer;
+    public LayerMask windAreaLayer;
+    public bool isGrounded;
+    //public bool wasGrounded;
+    public bool inWindArea;
+    public float windForce = 5f;
+
+    private Rigidbody2D rb;
+    private PlayerInput playerInput;
+    private InputAction moveAction;
+    private InputAction jumpAction;
+
+    private float horizontalInput;
+    //private float coyoteTimeCounter;
+    private bool facingRight = true;
+    public bool hasKey = false;
+
+
+    [Header("Spawn Point Info")]
+    private Vector2[] spawnPoints = {
+        new Vector2(-3.8f, 3.19f),
+
+    };
+    public int currentLevel = 0; 
+
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        playerInput = GetComponent<PlayerInput>();
+        moveAction = playerInput.actions["Move"];
+        jumpAction = playerInput.actions["Jump"];
+    }
+
+    void Update()
+    {
+        horizontalInput = moveAction.ReadValue<Vector2>().x;
+
+        isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayer);
+        inWindArea = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, windAreaLayer);
+
+        if (transform.position.y <= -2)
+        {
+            Death();
+        }
+
+        // Coyote time logic
+        if (isGrounded)
+        {
+            coyoteTimeCounter = coyoteTime;
+            if (!wasGrounded) // Only reset jumpCount when actually landing
+            {
+                jumpCount = maxJumpCount;
+            }
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
+        tryJumping();
+        wasGrounded = isGrounded;
+
+
+
+    }
+
+    void FixedUpdate()
+    {
+        rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
+
+
+
+        if (horizontalInput > 0 && !facingRight)
+        {
+            Flip();
+        }
+        else if (horizontalInput < 0 && facingRight)
+        {
+            Flip();
+        }
+
+        if (inWindArea)
+        {
+            rb.AddForce(Vector2.left * windForce, ForceMode2D.Force);
+        }
+    }
+
+    private void Death()
+    {
+        rb.linearVelocity = new Vector2(0f, 0f);
+        Vector2 firstPoint = spawnPoints[0];
+        float x = firstPoint.x;
+        float y = firstPoint.y;
+        transform.position = new Vector2(x, y);
+    }
+
+    private void tryJumping()
+    {
+        if (jumpAction.triggered)
+        {
+            // Allow jump if we have jumps left or within coyote time
+            if (jumpCount > 0 || coyoteTimeCounter > 0f)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+                jumpCount--;
+                coyoteTimeCounter = 0f; // Prevent further coyote jumps until grounded again
+            }
+        }
+
+    }
+
+    private void Flip()
+    {
+        facingRight = !facingRight;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
+    }
+
+    
+    private void OnDrawGizmosSelected()
+    {
+        if (groundCheckPoint != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(groundCheckPoint.position, groundCheckRadius);
+        }
+    }
+}
