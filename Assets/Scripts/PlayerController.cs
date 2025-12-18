@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     public int maxJumpCount = 2;
     public int jumpCount = 2;
     private float coyoteTimeCounter;
-    private bool wasGrounded;
+    public bool wasGrounded;
 
     [Header("地板偵測")]
     public Transform groundCheckPoint;
@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
 
 
     [Header("Spawn Point Info")]
-    private Vector2[] spawnPoints = {
+    public Vector2[] spawnPoints = {
         new Vector2(-3.8f, 3.19f),
 
     };
