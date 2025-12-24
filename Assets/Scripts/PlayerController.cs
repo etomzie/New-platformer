@@ -28,10 +28,11 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction moveAction;
     private InputAction jumpAction;
+    private Animator anim;
 
     private float horizontalInput;
     //private float coyoteTimeCounter;
-    private bool facingRight = true;
+    private bool facingRight = false;
     public bool hasKey = false;
 
 
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         playerInput = GetComponent<PlayerInput>();
+        anim = GetComponent<Animator>();
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
     }
@@ -112,7 +114,9 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Check for wall collision before applying horizontal movement
+        bool isMoving = horizontalInput != 0;
+        anim.SetBool("IsMoving", isMoving);
+
         if (!IsWallAhead() || (IsWallAhead() && 
             ((facingRight && horizontalInput < 0) || (!facingRight && horizontalInput > 0))))
         {
