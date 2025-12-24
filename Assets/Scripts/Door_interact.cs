@@ -1,7 +1,11 @@
 using UnityEngine;
 
-public class Interact_Trigger : MonoBehaviour
+
+
+
+public class Door_interact : MonoBehaviour
 {
+    public bool CanTrigger = false;
     public GameObject textUI;
 
     void Start()
@@ -14,6 +18,7 @@ public class Interact_Trigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             textUI.SetActive(true);
+            CanTrigger = true;
         }
     }
 
@@ -22,6 +27,7 @@ public class Interact_Trigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             textUI.SetActive(false);
+            CanTrigger = false;
         }
     }
 }
