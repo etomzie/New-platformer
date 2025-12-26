@@ -1,0 +1,13 @@
+Font: UoqMunThenKhung  Style: Regular
+Point Size: 24   Padding: 5   SP/PD Ratio: 20.8%
+
+Characters included: 98/99
+Missing characters: 1
+Excluded characters: 0
+
+Characters missing from font file:
+----------------------------------------
+ID: 8203	Hex: 200B	Char [​]
+
+Characters excluded from packing:
+----------------------------------------
