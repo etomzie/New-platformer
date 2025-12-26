@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags:
   - Ground
   layers:
@@ -42,3 +42,35 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: 1
+    uniqueID: 45793017
+    locked: 0
+  - name: 2
+    uniqueID: 582858557
+    locked: 0
+  - name: 3
+    uniqueID: 4277915285
+    locked: 0
+  - name: 4
+    uniqueID: 2346284107
+    locked: 0
+  - name: 5
+    uniqueID: 4071064439
+    locked: 0
+  - name: 6
+    uniqueID: 2266213543
+    locked: 0
+  - name: 7
+    uniqueID: 2898706295
+    locked: 0
+  - name: 8
+    uniqueID: 2849306767
+    locked: 0
+  - name: 9
+    uniqueID: 906814291
+    locked: 0
+  - name: 10
+    uniqueID: 2409496885
+    locked: 0
+  m_RenderingLayers:
+  - Default

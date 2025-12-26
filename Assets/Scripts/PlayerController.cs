@@ -157,7 +157,7 @@ public class PlayerController : MonoBehaviour
         if (jumpAction.triggered)
         {
             // Allow jump if we have jumps left or within coyote time
-            if ((jumpCount > 0 && isGrounded) || coyoteTimeCounter > 0f)
+            if (jumpCount > 0 || coyoteTimeCounter > 0f)
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);

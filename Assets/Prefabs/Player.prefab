@@ -116,7 +116,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e4966feb12c9d2d458de12cc88a41f3b, type: 2}
+  m_Sprite: {fileID: -1149526288, guid: a02bb96d8612be246973d5ddb49ec3fc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -263,11 +263,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cd1b40e87ae0ac44ade638cec5def4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  jumpForce: 13
+  moveSpeed: 6
+  jumpForce: 16
   coyoteTime: 0.1
   maxJumpCount: 1
   jumpCount: 1
+  wasGrounded: 0
   groundCheckPoint: {fileID: 7038273237740081742}
   groundCheckRadius: 0.05
   groundLayer:
@@ -280,6 +281,8 @@ MonoBehaviour:
   inWindArea: 0
   windForce: 5
   hasKey: 0
+  spawnPoints:
+  - {x: 90.44, y: 5}
   currentLevel: 0
-  wallCheckDistance: 0.2
-  characterHeight: 1
+  wallCheckDistance: 0.5
+  characterHeight: 0.8
