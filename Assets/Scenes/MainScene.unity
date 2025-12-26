@@ -27750,7 +27750,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1602732916511147565, guid: 696c588907f59d24db53ead5ff59f88c, type: 3}
       propertyPath: wallCheckDistance
-      value: 0.35
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1973394026485479384, guid: 696c588907f59d24db53ead5ff59f88c, type: 3}
       propertyPath: m_Camera
