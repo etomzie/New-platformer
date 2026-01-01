@@ -1,10 +1,12 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class DoorLogic: MonoBehaviour
 {
+
     public bool CanEnter = true;
-    public GameObject textUI;
+    //public GameObject textUI;
     public Transform circle;
 
     public Sprite OpenedSprite;
@@ -15,12 +17,13 @@ public class DoorLogic: MonoBehaviour
 
     void Awake()
     {
+
         sr = GetComponent<SpriteRenderer>();
     }
 
     void Start()
     {
-        textUI.SetActive(false);
+        //textUI.SetActive(false);
     }
 
     void Update()
@@ -37,38 +40,16 @@ public class DoorLogic: MonoBehaviour
         if (other.CompareTag("Player") && CanEnter)
         {
             PlayerController pc = other.GetComponent<PlayerController>();
+            DoorLogic dl = GetComponent<DoorLogic>();
             if (pc != null)
             {
-                StartCoroutine(ExpandDoorSequence(pc));
+                DefaultStartSceneManager.Instance.DoorTransition(pc, dl);
             }
             CanEnter = true;
         }
     }
 
-    IEnumerator ExpandDoorSequence(PlayerController pc)
-    {
-        float fadeDuration = 1f;
-        pc.inAnimation = true;
-        pc.FadeOut(fadeDuration);
-
-        yield return new WaitForSeconds(fadeDuration + 0.1f);
-        pc.inAnimation = false;
-
-        yield return StartCoroutine(ExpandCircleAnimation());
-    }
-    IEnumerator ShrinkDoorSequence(PlayerController pc)
-    {
-        float fadeDuration = 1f;
-        pc.inAnimation = true;
-        pc.FadeIn(fadeDuration);
-
-        yield return new WaitForSeconds(fadeDuration + 0.1f);
-        pc.inAnimation = false;
-
-        yield return StartCoroutine(ShrinkCircleAnimation());
-    }
-
-    IEnumerator ExpandCircleAnimation()
+    public IEnumerator ExpandCircleAnimation()
     {
         float duration = 1f;
         float elapsed = 0f;
@@ -84,7 +65,7 @@ public class DoorLogic: MonoBehaviour
         }
         circle.localScale = targetScale;
     }
-    IEnumerator ShrinkCircleAnimation()
+    public IEnumerator ShrinkCircleAnimation()
     {
         float duration = 1f;
         float elapsed = 0f;

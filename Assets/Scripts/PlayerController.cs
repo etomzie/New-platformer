@@ -63,6 +63,8 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        DontDestroyOnLoad(gameObject);
+
         rb = GetComponent<Rigidbody2D>();
         playerInput = GetComponent<PlayerInput>();
         anim = GetComponent<Animator>();
@@ -108,7 +110,7 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         bool isMoving = horizontalInput != 0;
-        anim.SetBool("IsMoving", isMoving);
+        //anim.SetBool("IsMoving", isMoving);
 
         if ((
             !IsWallAhead() || (IsWallAhead() && ((facingRight && horizontalInput < 0) || (!facingRight && horizontalInput > 0)))
@@ -163,7 +165,7 @@ public class PlayerController : MonoBehaviour
         c.a = endAlpha;
         sr.color = c;
     }
-
+    
     private bool IsWallAhead()
     {
         Vector2 direction = facingRight ? Vector2.right : Vector2.left;

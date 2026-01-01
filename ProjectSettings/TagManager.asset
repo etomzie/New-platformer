@@ -66,11 +66,17 @@ TagManager:
   - name: 8
     uniqueID: 2849306767
     locked: 0
+  - name: Player
+    uniqueID: 2134702281
+    locked: 0
   - name: 9
     uniqueID: 906814291
     locked: 0
   - name: 10
     uniqueID: 2409496885
+    locked: 0
+  - name: New Layer 11
+    uniqueID: 2802050689
     locked: 0
   m_RenderingLayers:
   - Default
