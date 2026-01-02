@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
     private Animator anim;
+    SpriteRenderer sr;
+    private Rigidbody2D rb;
 
 
     private float horizontalInput;
@@ -55,10 +57,6 @@ public class PlayerController : MonoBehaviour
     public bool inWindArea;
     public float windForce = 5f;
     public bool hasKey = false;
-    
-
-    SpriteRenderer sr;
-    private Rigidbody2D rb;
 
 
     void Awake()
@@ -103,14 +101,20 @@ public class PlayerController : MonoBehaviour
         tryJumping();
         wasGrounded = isGrounded;
 
-
+        if (isGrounded && rb.linearVelocity.y <= 0.1f)
+        {
+            anim.SetTrigger("land");
+        }
 
     }
 
     void FixedUpdate()
     {
-        bool isMoving = horizontalInput != 0;
-        //anim.SetBool("IsMoving", isMoving);
+        bool isWalking = horizontalInput != 0;
+        anim.SetBool("isWalking", isWalking);
+        bool isFalling = rb.linearVelocity.y < -0.1f;
+        anim.SetBool("isFalling", isFalling);
+        
 
         if ((
             !IsWallAhead() || (IsWallAhead() && ((facingRight && horizontalInput < 0) || (!facingRight && horizontalInput > 0)))
@@ -205,6 +209,7 @@ public class PlayerController : MonoBehaviour
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+                anim.SetTrigger("jump");
                 jumpCount--;
                 coyoteTimeCounter = 0f; // Prevent further coyote jumps until grounded again
             }
