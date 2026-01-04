@@ -2,6 +2,7 @@ using UnityEngine;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Camera))]
+
 public class Camera2D : MonoBehaviour
 {
     [Header("Target")]
@@ -21,6 +22,11 @@ public class Camera2D : MonoBehaviour
 
     private Vector2 followVelocity; // 給 SmoothDamp 用
 
+    [Header("Y Limits")]
+    public bool limitY = false;
+    public float minY;
+    public float maxY;
+
     void LateUpdate()
     {
         if (!useFixedUpdate) TickUpdate(Time.deltaTime);
@@ -35,34 +41,39 @@ public class Camera2D : MonoBehaviour
     {
         if (target == null) return;
 
-
-
-        // 1) 計算目標位置（含 offset）
         Vector3 desired = target.position;
         desired.x += offset.x;
         desired.y += offset.y;
-        desired.z = transform.position.z; // 保持原本的 Z
+        desired.z = transform.position.z;
 
         float facing = Mathf.Sign(target.localScale.x);
         PlayerController pc = target.GetComponent<PlayerController>();
-        if (facing > 0 && !pc.inAnimation) // left and right camera bias
-        {
+
+        if (facing > 0 && !pc.inAnimation)
             desired.x += x_bias;
-        }
         else
-        {
-            desired.x += -x_bias;
-        }
+            desired.x -= x_bias;
 
         if (freezeY)
         {
             desired.y = transform.position.y;
         }
+        else if (limitY)
+        {
+            desired.y = Mathf.Clamp(desired.y, minY, maxY);
+        }
 
-        // 2) 平滑跟隨
-        Vector2 current = new Vector2(transform.position.x, transform.position.y);
+        Vector2 current = transform.position;
         Vector2 target2 = new Vector2(desired.x, desired.y);
-        Vector2 smoothed = Vector2.SmoothDamp(current, target2, ref followVelocity, smoothTime, maxSpeed, dt);
+
+        Vector2 smoothed = Vector2.SmoothDamp(
+            current,
+            target2,
+            ref followVelocity,
+            smoothTime,
+            maxSpeed,
+            dt
+        );
 
         transform.position = new Vector3(smoothed.x, smoothed.y, desired.z);
     }

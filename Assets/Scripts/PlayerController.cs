@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -48,7 +49,7 @@ public class PlayerController : MonoBehaviour
         new Vector2(-3.8f, 3.19f),
 
     };
-    public int currentLevel = 0; 
+    public int currentLevel = 1; 
 
     [Header("Wall Check")]
     public float wallCheckDistance = 0.2f;
@@ -58,6 +59,7 @@ public class PlayerController : MonoBehaviour
     public bool inWindArea;
     public float windForce = 5f;
     public bool hasKey = false;
+    public Image transitionImage;
 
 
     void Awake()
@@ -144,6 +146,41 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        //Debug.Log("Triggered with: " + other.gameObject.name);
+        if (other.CompareTag("Respawn"))
+        {
+            //Debug.Log("Respawn Triggered");
+            StartCoroutine(DeathSequence());
+        }
+    }
+
+    private void Death()
+    {
+
+        rb.linearVelocity = new Vector2(0f, 0f);
+        Vector2 firstPoint = spawnPoints[0];
+        float x = firstPoint.x;
+        float y = firstPoint.y;
+        transform.position = new Vector2(x, y);
+    }
+    IEnumerator DeathSequence()
+    {
+        inAnimation = true;
+        StartCoroutine(FadeUI(0f, 1f, 1f));
+        StartCoroutine(Fade(1f, 0f, 1f));
+        yield return new WaitForSeconds(1f);
+        Death();
+        
+        StartCoroutine(Fade(1f, 1f, 0f));
+        yield return new WaitForSeconds(0.5f);
+        yield return StartCoroutine(FadeUI(1f, 0f, 1f));
+
+
+        inAnimation = false;
+    }
+
     public void FadeOut(float duration)
     {
         StartCoroutine(Fade(1f, 0f, duration));
@@ -168,6 +205,24 @@ public class PlayerController : MonoBehaviour
         c.a = endAlpha;
         sr.color = c;
     }
+
+    IEnumerator FadeUI(float startAlpha, float endAlpha, float duration)
+    {
+        Debug.Log("FadeUI called");
+        float t = 0f;
+        Color c = transitionImage.color;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            c.a = Mathf.Lerp(startAlpha, endAlpha, t / duration);
+            transitionImage.color = c;
+            yield return null;
+        }
+
+        c.a = endAlpha;
+        transitionImage.color = c;
+    }
     
     private bool IsWallAhead()
     {
@@ -191,14 +246,7 @@ public class PlayerController : MonoBehaviour
 
         return bottomHit.collider != null || topHit.collider != null || centerHit.collider != null;
     }
-    private void Death()
-    {
-        rb.linearVelocity = new Vector2(0f, 0f);
-        Vector2 firstPoint = spawnPoints[0];
-        float x = firstPoint.x;
-        float y = firstPoint.y;
-        transform.position = new Vector2(x, y);
-    }
+
     private void tryJumping()
     {
         if (jumpAction.triggered)

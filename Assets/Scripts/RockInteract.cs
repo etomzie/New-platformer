@@ -1,9 +1,7 @@
 using UnityEngine;
 
 
-
-
-public class Door_interact : MonoBehaviour
+public class RockInteract: MonoBehaviour
 {
     public bool CanTrigger = false;
     public GameObject textUI;
