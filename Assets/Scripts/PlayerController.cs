@@ -100,20 +100,22 @@ public class PlayerController : MonoBehaviour
         tryJumping();
         wasGrounded = isGrounded;
 
-        if (isGrounded && rb.linearVelocity.y <= 0.1f)
+        if (isGrounded && !wasGrounded && rb.linearVelocity.y == 0)
         {
             anim.SetTrigger("land");
         }
 
+        Debug.Log(rb.linearVelocity.y);
     }
 
     void FixedUpdate()
     {
         bool isWalking = horizontalInput != 0;
         anim.SetBool("isWalking", isWalking);
-        bool isFalling = rb.linearVelocity.y < -0.1f;
+        bool isFalling = rb.linearVelocity.y < -0.1f && !isGrounded;
         anim.SetBool("isFalling", isFalling);
-        
+        bool onTheGround = isGrounded;
+        anim.SetBool("onTheGround", onTheGround);
 
         if ((
             !IsWallAhead() || (IsWallAhead() && ((facingRight && horizontalInput < 0) || (!facingRight && horizontalInput > 0)))
