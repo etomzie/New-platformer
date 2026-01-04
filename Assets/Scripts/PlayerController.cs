@@ -105,9 +105,8 @@ public class PlayerController : MonoBehaviour
         if (isGrounded && !wasGrounded && rb.linearVelocity.y == 0)
         {
             anim.SetTrigger("land");
+            anim.ResetTrigger("jump");
         }
-
-        Debug.Log(rb.linearVelocity.y);
     }
 
     void FixedUpdate()
