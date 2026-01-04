@@ -34,11 +34,7 @@ public class DefaultStartSceneManager : MonoBehaviour
         SceneManager.LoadScene("World_1");
 
         yield return null;
-
-        pc.FadeIn(fadeDuration);
-        yield return new WaitForSeconds(fadeDuration);
-
-        pc.inAnimation = false;
+        
     }
 
 }

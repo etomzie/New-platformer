@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class DoorLogic: MonoBehaviour
 {
+    public bool startExpanded = false;
 
     public bool CanEnter = true;
     //public GameObject textUI;
@@ -23,7 +24,11 @@ public class DoorLogic: MonoBehaviour
 
     void Start()
     {
-        //textUI.SetActive(false);
+        if (startExpanded) {
+            circle.localScale = new Vector3(10f, 10f, 1f);
+            StartCoroutine(ShrinkSequence());
+        }
+        else circle.localScale = new Vector3(0f, 0f, 1f);
     }
 
     void Update()
@@ -37,7 +42,7 @@ public class DoorLogic: MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player") && CanEnter)
+        if (other.CompareTag("Player") && CanEnter && !startExpanded)
         {
             PlayerController pc = other.GetComponent<PlayerController>();
             DoorLogic dl = GetComponent<DoorLogic>();
@@ -45,8 +50,29 @@ public class DoorLogic: MonoBehaviour
             {
                 DefaultStartSceneManager.Instance.DoorTransition(pc, dl);
             }
-            CanEnter = true;
+            //CanEnter = true;
         }
+    }
+    public IEnumerator ShrinkSequence()
+    {
+        float fadeDuration = 1f;
+        PlayerController pc = FindAnyObjectByType<PlayerController>();
+        Color c = pc.sr.color;
+        c.a = 0f;
+        pc.sr.color = c;
+
+        pc.inAnimation = true;
+ 
+        yield return StartCoroutine(ShrinkCircleAnimation());
+        yield return new WaitForSeconds(0.1f);
+        
+        if (pc == null) Debug.LogError("PlayerController not found!");
+        
+        pc.FadeIn(fadeDuration);
+        yield return new WaitForSeconds(fadeDuration + 0.1f);
+        CanEnter = false;
+
+        pc.inAnimation = false;
     }
 
     public IEnumerator ExpandCircleAnimation()

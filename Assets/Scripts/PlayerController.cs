@@ -4,6 +4,7 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+
     [Header("移動設定")]
     public float moveSpeed = 5f;
     public float jumpForce = 8f;
@@ -30,7 +31,7 @@ public class PlayerController : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
     private Animator anim;
-    SpriteRenderer sr;
+    public SpriteRenderer sr;
     private Rigidbody2D rb;
 
 
@@ -61,8 +62,6 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-
         rb = GetComponent<Rigidbody2D>();
         playerInput = GetComponent<PlayerInput>();
         anim = GetComponent<Animator>();
