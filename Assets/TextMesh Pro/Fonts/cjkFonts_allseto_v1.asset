@@ -49,7 +49,7 @@ MonoBehaviour:
     atlasWidth: 512
     atlasHeight: 512
     characterSetSelectionMode: 7
-    characterSequence: "\u30C9\u30FC\u30A2\u306E\u4E16\u754C\n\u6309 \u53EF\u4EE5\u79FB\u52D5\n\u4E92\u52D5\u7269\u4EF6\n!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\uFF0C\u3002\uFF01\uFF1F\uFF1B\uFF1A\u3001\u300C\u300D\u300E\u300F\u2014\uFF08\uFF09\u3008\u3009\u300A\u300B\u3010\u3011\u2026\n"
+    characterSequence: "\u30C9\u30FC\u30A2\u306E\u4E16\u754C\n\u6309 \u53EF\u4EE5\u79FB\u52D5\n\u4E92\u52D5\u7269\u4EF6\n!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\uFF0C\u3002\uFF01\uFF1F\uFF1B\uFF1A\u3001\u300C\u300D\u300E\u300F\u2014\uFF08\uFF09\u3008\u3009\u300A\u300B\u3010\u3011\u2026\u2B95\n"
     referencedFontAssetGUID: 
     referencedTextAssetGUID: 
     fontStyle: 0
