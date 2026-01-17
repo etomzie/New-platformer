@@ -31,6 +31,9 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction moveAction;
     private InputAction jumpAction;
+    private InputAction sprintAction;
+    private InputAction restartAction;
+    private InputAction interactAction;
     private Animator anim;
     public SpriteRenderer sr;
     private Rigidbody2D rb;
@@ -71,6 +74,9 @@ public class PlayerController : MonoBehaviour
 
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
+        sprintAction = playerInput.actions["Sprint"];
+        restartAction = playerInput.actions["Restart"];
+        //interactAction = playerInput.actions["Interact"];
     }
 
     void Update()
@@ -117,6 +123,11 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("isFalling", isFalling);
         bool onTheGround = isGrounded;
         anim.SetBool("onTheGround", onTheGround);
+
+        if (sprintAction.IsPressed())
+        {
+            horizontalInput *= 1.5f;
+        }
 
         if ((
             !IsWallAhead() || (IsWallAhead() && ((facingRight && horizontalInput < 0) || (!facingRight && horizontalInput > 0)))
